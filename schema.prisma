@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Model untuk Akun Pengguna (Orang Tua atau Admin)
+model User {
+  id        String    @id @default(cuid())
+  nama      String
+  email     String    @unique
+  password  String
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  student   Student?
+
+  // Field untuk reset password
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
+}
+
+// Model untuk Data Siswa
+model Student {
+  id             String           @id @default(cuid())
+  namaLengkap    String
+  nisn           String?          @unique
+  tempatLahir    String
+  tanggalLahir   DateTime
+  alamat         String
+  sekolahAsal    String
+  namaOrangTua   String
+  nomorTelepon   String
+  status         StatusPenerimaan @default(CALON_SISWA)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String           @unique
+  
+  // Field untuk upload berkas
+  fileIjazah     String?
+  fileAkta       String?
+  fileKk         String?
+}
+
+// Enum untuk Role Pengguna
+enum Role {
+  USER
+  ADMIN
+}
+
+// Enum untuk Status Penerimaan Siswa
+enum StatusPenerimaan {
+  CALON_SISWA
+  SISWA_DITERIMA
+  SISWA_DITOLAK
+}
