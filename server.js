@@ -18,7 +18,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const prisma = new PrismaClient();
 const PORT = 3001;
-const JWT_SECRET = 'rahasia-super-duper-aman-jangan-disebar';
+const JWT_SECRET = 'ganti-sesuai-maunya';
 
 // Konfigurasi Multer untuk upload file
 const uploadDir = path.join(__dirname, 'uploads');
@@ -265,4 +265,5 @@ app.post('/api/auth/reset-password', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server backend berjalan di http://localhost:${PORT}`);
 });
+
 
